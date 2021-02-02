@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\History;
 use Carbon\Carbon;
+use Storage; 
 
 class NewsController extends Controller
 {
@@ -15,29 +16,19 @@ class NewsController extends Controller
 
   public function create(Request $request)
   {
-
-      // 以下を追記
-      // Varidationを行う
       $this->validate($request, News::$rules);
-
       $news = new News;
       $form = $request->all();
-      
 
-      // フォームから画像が送信されてきたら、保存して、$news->image_path に画像のパスを保存する
       if (isset($form['image'])) {
-        $path = $request->file('image')->store('public/image');
-        $news->image_path = basename($path);
+    
+        $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        $news->image_path = Storage::disk('s3')->url($path);
       } else {
           $news->image_path = null;
       }
-
-      // フォームから送信されてきた_tokenを削除する
       unset($form['_token']);
-      // フォームから送信されてきたimageを削除する
       unset($form['image']);
-
-      // データベースに保存する
       $news->fill($form);
       $news->save();
 
@@ -78,8 +69,8 @@ class NewsController extends Controller
      if ($request->remove == 'true') {
          $news_form['image_path'] = null;
      } elseif ($request->file('image')) {
-         $path = $request->file('image')->store('public/image');
-         $news_form['image_path'] = basename($path);
+        $path = Storage::disk('s3')->putFile('/',$form['image'],'public');
+        $news->image_path = Storage::disk('s3')->url($path);
      } else {
          $news_form['image_path'] = $news->image_path;
      }
