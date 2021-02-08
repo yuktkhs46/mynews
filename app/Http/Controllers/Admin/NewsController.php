@@ -18,7 +18,9 @@ class NewsController extends Controller
   {
       $this->validate($request, News::$rules);
       $news = new News;
+      
       $form = $request->all();
+      
 
       if (isset($form['image'])) {
     
@@ -30,6 +32,7 @@ class NewsController extends Controller
       unset($form['_token']);
       unset($form['image']);
       $news->fill($form);
+      
       $news->save();
 
       return redirect('admin/news/create');
