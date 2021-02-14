@@ -40,6 +40,7 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
+                        @guest
                         <ul class="navbar-nav mr-auto">
                         <a class="navbar-brand" href="{{ url('admin/news/create') }}">
                         ニュース新規作成
@@ -53,9 +54,8 @@
                         <a class="navbar-brand" href="{{ url('admin/profile') }}">
                         作成済みプロフィール一覧
                         </a>
-
-
                         </ul>
+                        @endguest
 
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">

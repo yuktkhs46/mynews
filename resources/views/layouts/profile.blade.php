@@ -40,6 +40,7 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
+                        
                         <ul class="navbar-nav mr-auto">
                         <a class="navbar-brand" href="{{ url('admin/news/create') }}">
                         ニュース新規作成
